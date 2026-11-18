@@ -249,20 +249,38 @@
   .stats span { display: block; margin-top: 6px; font-size: 15px; font-weight: 600; }
   .tally { margin: 28px 0 0; padding: 18px 22px; border: 2.5px dashed var(--ink); border-radius: 14px; font-size: 16.5px; }
   .tally b { font-weight: 900; color: var(--blue); white-space: nowrap; }
+  .stats.cases em { display: block; margin-top: 10px; padding-top: 10px; border-top: 2px dashed #cbd1db; font-style: normal; font-size: 14px; font-weight: 700; color: var(--blue); }
   .stats.cases b { font-size: clamp(24px, 3vw, 32px); color: var(--ink); }
-  .probs.six { grid-template-columns: repeat(3, 1fr); }
+  .lines { list-style: none; margin: 16px 0 0; padding: 0; counter-reset: ln; }
+  .lines li { position: relative; padding: 13px 0 13px 44px; border-bottom: 2px dashed #cbd1db; font-size: 16.5px; color: var(--soft); counter-increment: ln; }
+  .lines li::before { content: counter(ln); position: absolute; left: 0; top: 11px; width: 28px; height: 28px; border-radius: 50%; border: 2.5px solid var(--ink); background: var(--yellow); color: var(--ink); font-weight: 900; font-size: 14px; display: grid; place-items: center; }
+  .lines b { color: var(--ink); font-weight: 800; }
+  .probs.four { grid-template-columns: repeat(4, 1fr); }
+  .probs.four .prob h3 { font-size: 18px; }
+  .flowrow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .flowrow > div { position: relative; padding: 18px 18px 20px; background: var(--c); border: 2.5px solid var(--ink); border-radius: 16px; box-shadow: 3px 3px 0 var(--ink); }
+  .flowrow .no { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: var(--white); font-style: normal; font-weight: 900; font-size: 14px; margin-bottom: 10px; }
+  .flowrow b { display: block; font-size: 20px; font-weight: 900; }
+  .flowrow span { display: block; margin-top: 4px; font-size: 14.5px; color: var(--soft); }
+  .flowrow > div:not(:last-child)::after {
+    content: ""; position: absolute; right: -23px; top: 18px; width: 25px; height: 25px; border-radius: 50%; z-index: 2;
+    border: 2.5px solid var(--ink);
+    background: var(--blue) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M4.5 2.5L8 6l-3.5 3.5' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 13px no-repeat;
+  }
+  @media (max-width: 1000px) { .flowrow, .probs.four { grid-template-columns: 1fr 1fr; } .flowrow > div::after { display: none !important; } }
+  @media (max-width: 560px) { .flowrow, .probs.four { grid-template-columns: 1fr; } }
   .guard { margin-top: 26px; padding: 26px 30px; background: var(--ink); color: var(--paper); box-shadow: 5px 5px 0 var(--blue); }
   .guard h3 { margin: 0 0 12px; font-size: 22px; font-weight: 900; color: var(--yellow); }
   .guard ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; font-size: 16.5px; }
-  .stack { padding: 10px 28px; }
-  .srow { display: grid; grid-template-columns: 110px 1fr; gap: 16px; align-items: center; padding: 14px 0; border-bottom: 2px dashed #cbd1db; }
+  .stack { padding: 24px 26px; margin-top: 24px; }
+  .srow { display: grid; grid-template-columns: 150px 1fr; gap: 16px; align-items: center; padding: 14px 0; border-bottom: 2px dashed #cbd1db; }
   .srow:last-child { border-bottom: 0; }
   .srow b { font-weight: 900; font-size: 16px; }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; }
   .chips i { font-style: normal; font-weight: 700; font-size: 14.5px; padding: 4px 12px; border: 2px solid var(--ink); border-radius: 999px; background: #e7f0ff; }
   .final { padding: 48px 32px; text-align: center; background: var(--yellow); }
   .final p { max-width: 560px; margin: 0 auto 24px; font-size: 17px; }
-  @media (max-width: 860px) { .stats { grid-template-columns: 1fr 1fr; } .probs.six { grid-template-columns: 1fr; } .srow { grid-template-columns: 1fr; gap: 8px; } }
+  @media (max-width: 860px) { .stats { grid-template-columns: 1fr 1fr; } .srow { grid-template-columns: 1fr; gap: 8px; } }
 
   .survey { background: var(--blue); border: 2.5px solid var(--ink); border-radius: 26px; box-shadow: var(--shadow); padding: 40px 28px; color: var(--white); }
   .survey h2 { margin-top: 12px; }
@@ -304,7 +322,6 @@
     <a class="brand" href="/"><i></i>opensurvey <span>engineering</span></a>
     <nav>
       <a href="#sim">합성패널</a>
-      <a href="#what">만드는 것</a>
       <a href="#how">AI native</a>
       <a href="#work">하는 일</a>
       <a href="#stack">Stack</a>
@@ -426,11 +443,6 @@
       <span class="tag" style="background:var(--coral)">합성패널</span>
       <h2>이 컨셉, 소비자가 살까요?<br>합성패널이 먼저 답합니다</h2>
       <p class="sub">식품이나 화장품 회사 같은 고객사는 신제품을 시장에 내놓기 전에 컨셉부터 만듭니다. 저희 제품은 합성패널로 그 컨셉에 대한 소비자의 구매 의향을 시뮬레이션합니다.</p>
-      <div class="how3">
-        <div><b>컨셉을 만듭니다</b><span>고객사가 신제품 컨셉을 만듭니다.</span></div>
-        <div><b>합성패널로 시뮬레이션합니다</b><span>실제 소비자 데이터로 만든 합성패널이 컨셉에 반응합니다.</span></div>
-        <div><b>구매 의향을 확인합니다</b><span>살 사람이 얼마나 되는지 보고, 가능성이 높은 컨셉만 다음 단계로 가져갑니다.</span></div>
-      </div>
       <p class="sub"><strong>직접 해 보세요.</strong> 컨셉 스튜디오가 하는 일을 작게 줄인 체험입니다. 여러분이 전자제품 회사의 상품 기획자라고 해 보겠습니다. 다음 신제품 후보가 넷 있습니다. 하나를 골라 시뮬레이션해 보세요.</p>
       <div class="sim box">
         <div>
@@ -450,72 +462,14 @@
         <div class="prob box"><span class="tag" style="background:var(--mint)">문제 2</span><h3>어떻게 그 사람답게 답하게 할까</h3><p>질문을 받으면 demographic, 태도, 행동 같은 합성패널의 memory에서 관련된 내용을 찾아, 그 질문에 대한 응답을 시뮬레이션합니다. memory에서 찾은 답인지 추론한 답인지를 응답마다 표시합니다.</p></div>
         <div class="prob box"><span class="tag" style="background:var(--lilac)">문제 3</span><h3>엔진을 고치는 Agent loop를 어떻게 만들까</h3><p>같은 질문에 실제 패널의 응답과 합성패널의 응답을 비교합니다. 방향이 같은지, 크기가 같은지, 다시 돌려도 같은지를 문항마다 판정합니다. 이 결과로 Agent가 프롬프트와 보정 규칙을 고치고 다시 재는 loop를 만듭니다.</p></div>
       </div>
-    </div>
-  </section>
 
-  <section id="what">
-    <div class="wrap">
-      <span class="tag" style="background:var(--yellow)">만드는 것</span>
-      <h2>데이터를 모으는 앱부터 신제품을 평가하는 도구까지</h2>
+      <h3 class="mid" style="margin-top:56px">네 제품이 이렇게 이어집니다</h3>
       <p class="sub">데이터는 번호 순서로 흐릅니다. 오베이에서 모이고, 데이터스페이스에서 분석되고, 합성패널이 되어 컨셉 스튜디오의 신제품 평가에 쓰입니다.</p>
-      <div class="cards">
-        <div class="card box" style="--c:#e3f1ea">
-          <div class="art"><i class="no">1</i><svg viewBox="0 0 240 140" aria-hidden="true">
-            <rect x="84" y="12" width="72" height="118" rx="14" fill="#fff" stroke="#232c3e" stroke-width="3"/>
-            <path d="M108 22h24" stroke="#232c3e" stroke-width="3" stroke-linecap="round"/>
-            <rect x="96" y="38" width="48" height="26" rx="8" fill="#f5e89d" stroke="#232c3e" stroke-width="2.5"/>
-            <text x="120" y="57" text-anchor="middle" font-weight="900" font-size="16" fill="#232c3e">Q1</text>
-            <rect x="96" y="74" width="48" height="14" rx="7" fill="#0050ff" stroke="#232c3e" stroke-width="2.5"/>
-            <rect x="96" y="96" width="48" height="14" rx="7" fill="#fff" stroke="#232c3e" stroke-width="2.5"/>
-            <g class="float"><circle cx="192" cy="46" r="18" fill="#f5e89d" stroke="#232c3e" stroke-width="3"/><text x="192" y="53" text-anchor="middle" font-weight="900" font-size="18" fill="#232c3e">P</text></g>
-            <g class="float b"><circle cx="46" cy="92" r="14" fill="#e3765d" stroke="#232c3e" stroke-width="3"/><text x="46" y="98" text-anchor="middle" font-weight="900" font-size="15" fill="#232c3e">P</text></g>
-          </svg></div>
-          <div class="txt"><h3>오베이</h3><p>패널이 설문에 답하고 보상을 받는 모바일 앱입니다. 저희 제품이 쓰는 소비자 데이터가 여기서 모입니다.</p><p class="pass"><b>다음으로 넘기는 것</b>패널의 설문 응답과 행동 데이터</p></div>
-        </div>
-        <div class="card box" style="--c:#e7f0ff">
-          <div class="art"><i class="no">2</i><svg viewBox="0 0 240 140" aria-hidden="true">
-            <rect x="22" y="20" width="96" height="100" rx="10" fill="#fff" stroke="#232c3e" stroke-width="3"/>
-            <g stroke="#232c3e" stroke-width="3" stroke-linecap="round"><path d="M56 42h48M56 70h36M56 98h44"/></g>
-            <circle cx="40" cy="42" r="8" fill="#0050ff" stroke="#232c3e" stroke-width="3"/>
-            <circle cx="40" cy="70" r="8" fill="#fff" stroke="#232c3e" stroke-width="3"/>
-            <circle cx="40" cy="98" r="8" fill="#fff" stroke="#232c3e" stroke-width="3"/>
-            <path d="M138 118h84" stroke="#232c3e" stroke-width="3" stroke-linecap="round"/>
-            <rect class="grow" x="144" y="80" width="18" height="36" fill="#f5e89d" stroke="#232c3e" stroke-width="3"/>
-            <rect class="grow g2" x="170" y="52" width="18" height="64" fill="#e3765d" stroke="#232c3e" stroke-width="3"/>
-            <rect class="grow g3" x="196" y="30" width="18" height="86" fill="#cfe5dc" stroke="#232c3e" stroke-width="3"/>
-          </svg></div>
-          <div class="txt"><h3>데이터스페이스</h3><p>설문 제작, 응답 수집, 분석을 한곳에서 하는 리서치 플랫폼입니다. 데이터에 대해 질문하면 AI가 분석해 답합니다.</p><p class="pass"><b>다음으로 넘기는 것</b>정리하고 분석한 소비자 데이터</p></div>
-        </div>
-        <div class="card box" style="--c:#faf3c8">
-          <div class="art"><i class="no">3</i><svg viewBox="0 0 240 140" aria-hidden="true">
-            <g stroke="#232c3e" stroke-width="3">
-              <circle cx="62" cy="70" r="30" fill="#e3765d"/>
-              <circle cx="178" cy="70" r="30" fill="#fff" stroke-dasharray="7 6" class="spin"/>
-              <circle cx="120" cy="70" r="30" fill="#cfe5dc"/>
-            </g>
-            <g fill="#232c3e"><circle cx="52" cy="64" r="4"/><circle cx="72" cy="64" r="4"/><circle cx="110" cy="64" r="4"/><circle cx="130" cy="64" r="4"/><circle cx="168" cy="64" r="4"/><circle cx="188" cy="64" r="4"/></g>
-            <g fill="none" stroke="#232c3e" stroke-width="3" stroke-linecap="round"><path d="M52 80q10 8 20 0M110 80q10 8 20 0M168 80q10 8 20 0"/></g>
-            <path class="pulse" d="M210 22l4 10 10 4-10 4-4 10-4-10-10-4 10-4z" fill="#0050ff"/>
-          </svg></div>
-          <div class="txt"><h3>합성패널</h3><p>실제 소비자 데이터로 만든 가상의 소비자 집단입니다. 설문과 인터뷰를 사람 대신 합성패널에게 할 수 있습니다. 고객사 데이터로 그 회사 전용 합성패널도 만듭니다.</p><p class="pass"><b>다음으로 넘기는 것</b>질문에 답하는 합성 소비자</p></div>
-        </div>
-        <div class="card box" style="--c:#e9e2f5">
-          <div class="art"><i class="no">4</i><svg viewBox="0 0 240 140" aria-hidden="true">
-            <g stroke="#232c3e" stroke-width="3" stroke-linejoin="round">
-              <rect x="20" y="40" width="52" height="66" rx="8" fill="#fff" transform="rotate(-8 46 73)"/>
-              <rect x="74" y="34" width="52" height="66" rx="8" fill="#fff"/>
-              <rect x="150" y="22" width="70" height="92" rx="10" fill="#f5e89d"/>
-            </g>
-            <g stroke="#232c3e" stroke-width="3" stroke-linecap="round" fill="none">
-              <path d="M32 62l26-4M34 76l20-3M86 52h28M86 66h20"/>
-              <path d="M130 68h14" stroke-dasharray="3 6"/>
-              <path d="M162 84h46M162 98h30"/>
-            </g>
-            <path class="pulse" d="M185 34l5 12 12 5-12 5-5 12-5-12-12-5 12-5z" fill="#0050ff"/>
-            <g class="float"><circle cx="100" cy="112" r="13" fill="#cfe5dc" stroke="#232c3e" stroke-width="3"/><path d="M94 112l4 5 8-10" fill="none" stroke="#232c3e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>
-          </svg></div>
-          <div class="txt"><h3>컨셉 스튜디오</h3><p>신제품 아이디어를 만들고 평가해 컨셉으로 다듬는 도구입니다. 합성패널로 구매 의향을 시뮬레이션해, 가능성이 낮은 아이디어를 먼저 걸러 냅니다. 식품과 화장품 분야에서 씁니다.</p><p class="pass"><b>고객사가 받는 것</b>컨셉마다의 구매 의향</p></div>
-        </div>
+      <div class="flowrow">
+        <div style="--c:#e3f1ea"><i class="no">1</i><b>오베이</b><span>패널이 설문에 답하고 보상을 받는 모바일 앱입니다. 소비자 데이터가 여기서 모입니다.</span></div>
+        <div style="--c:#e7f0ff"><i class="no">2</i><b>데이터스페이스</b><span>설문 제작, 응답 수집, 분석을 한곳에서 하는 리서치 플랫폼입니다.</span></div>
+        <div style="--c:#faf3c8"><i class="no">3</i><b>합성패널</b><span>실제 소비자 데이터로 만든 가상의 소비자 집단입니다.</span></div>
+        <div style="--c:#e9e2f5"><i class="no">4</i><b>컨셉 스튜디오</b><span>합성패널로 신제품 컨셉의 구매 의향을 시뮬레이션하는 도구입니다.</span></div>
       </div>
     </div>
   </section>
@@ -539,18 +493,13 @@
       </div>
 
       <h3 class="mid" style="margin-top:56px">2주가 가능한 이유 셋</h3>
-      <div class="probs" style="margin-top:20px">
-        <div class="prob box"><span class="tag" style="background:var(--yellow)">이유 1</span><h3>여러 Agent가 병렬로 일합니다</h3><p>문서, 구현, QA를 Agent가 나눠 맡아 한꺼번에 진행합니다. 한 사람이 차례로 하던 일이 동시에 끝납니다.</p></div>
-        <div class="prob box"><span class="tag" style="background:var(--mint)">이유 2</span><h3>문서가 그대로 Agent의 context가 됩니다</h3><p>앞 단계에서 쓴 문서를 다음 단계의 Agent가 context로 읽고 일합니다. 사람이 다시 설명하거나 넘겨받기를 기다리는 시간이 없습니다.</p></div>
-        <div class="prob box"><span class="tag" style="background:var(--lilac)">이유 3</span><h3>Harness 안에서 Agent loop가 끝까지 돕니다</h3><p>구현 Agent가 만들고, 리뷰 Agent가 판정하고, QA Agent가 테스트합니다. 통과할 때까지 이 loop가 스스로 돌고, 사람은 loop가 멈춘 자리에서만 판단합니다.</p></div>
-      </div>
+      <ol class="lines">
+        <li><b>여러 Agent가 병렬로 일합니다.</b> 문서, 구현, QA를 나눠 맡아 한꺼번에 진행합니다.</li>
+        <li><b>문서가 그대로 Agent의 context가 됩니다.</b> 다시 설명하거나 넘겨받기를 기다리지 않습니다.</li>
+        <li><b>Harness 안에서 Agent loop가 끝까지 돕니다.</b> 통과할 때까지 스스로 돌고, 사람은 loop가 멈춘 자리에서만 판단합니다.</li>
+      </ol>
 
-      <h2 style="margin-top:88px">문서부터 성과 분석까지 AI가 합니다</h2>
-      <p class="sub">일 하나는 문서 여섯 개를 차례로 거칩니다. 초안은 Agent가 쓰고 사람이 판단합니다. 문서마다 답해야 하는 질문이 하나씩 있으니 눌러 보세요.</p>
-
-      <div class="steps" role="tablist" id="steps"></div>
-      <div class="detail box" id="detail" role="tabpanel"></div>
-      <div class="adr">되돌리기 어려운 결정을 내리면, 어느 단계에서든 그 이유를 ADR(Architecture Decision Record) 한 장으로 남깁니다.</div>
+      <p class="tally">일 하나는 PRD, RFC, Design, Spec, Plan, Impact 문서 여섯 개를 차례로 거칩니다. 초안은 Agent가 쓰고 사람이 판단하며, 되돌리기 어려운 결정은 ADR(Architecture Decision Record)로 남깁니다.</p>
     </div>
   </section>
 
@@ -559,13 +508,11 @@
       <span class="tag" style="background:var(--coral)">개발자가 하는 일</span>
       <h2>코드를 치는 시간보다 판단하는 시간이 깁니다</h2>
       <p class="sub">Agent가 초안과 구현을 맡는 만큼, 사람의 일은 더 어려운 쪽으로 옮겨 갑니다.</p>
-      <div class="probs six">
-        <div class="prob box"><span class="tag">1</span><h3>문제를 정의합니다</h3><p>무엇을 왜 지금 풀지를 RFC 한 페이지로 씁니다. 착수할지는 사람이 결정하고, 기한이 지나도 자동으로 승인되지 않습니다.</p></div>
-        <div class="prob box"><span class="tag">2</span><h3>설계를 고릅니다</h3><p>Agent가 조사해 온 선택지 가운데 하나를 고릅니다. 되돌리기 어려운 결정은 그 이유를 ADR로 남깁니다.</p></div>
-        <div class="prob box"><span class="tag">3</span><h3>Harness를 설계합니다</h3><p>Agent의 역할을 나누고 리뷰 게이트와 상한을 정합니다. 반려는 두 번, 검증은 세 차례까지이고 넘으면 사람에게 올라옵니다.</p></div>
-        <div class="prob box"><span class="tag">4</span><h3>평가를 설계합니다</h3><p>합성패널이 실제와 같은지를 무엇으로 잴지 정합니다. 보기를 고르게만 골라도 높게 나오는 지표를 발견해, 판정 기준에서 뺀 적이 있습니다.</p></div>
-        <div class="prob box"><span class="tag">5</span><h3>리뷰 기준을 고칩니다</h3><p>Agent가 따르는 가이드와 리뷰 기준은 사람이 쓰고 고칩니다. 기준을 고치면 모든 Agent의 결과가 함께 바뀝니다.</p></div>
-        <div class="prob box"><span class="tag">6</span><h3>배포를 승인하고 책임집니다</h3><p>배포 계획을 리뷰하고 배포를 승인합니다. 문제가 생겼을 때 되돌릴지도 사람이 판단합니다.</p></div>
+      <div class="probs four">
+        <div class="prob box"><span class="tag">1</span><h3>문제를 정의하고 설계를 고릅니다</h3><p>무엇을 왜 지금 풀지를 RFC 한 페이지로 씁니다. Agent가 조사해 온 선택지 가운데 하나를 고르고, 되돌리기 어려운 결정은 ADR로 남깁니다.</p></div>
+        <div class="prob box"><span class="tag">2</span><h3>Harness를 설계합니다</h3><p>Agent의 역할을 나누고 리뷰 게이트와 상한을 정합니다. Agent가 따르는 가이드와 리뷰 기준도 사람이 쓰고 고칩니다.</p></div>
+        <div class="prob box"><span class="tag">3</span><h3>평가를 설계합니다</h3><p>합성패널이 실제와 같은지를 무엇으로 잴지 정합니다. 보기를 고르게만 골라도 높게 나오는 지표를 발견해, 판정 기준에서 뺀 적이 있습니다.</p></div>
+        <div class="prob box"><span class="tag">4</span><h3>배포를 승인하고 책임집니다</h3><p>배포 계획을 리뷰하고 배포를 승인합니다. 문제가 생겼을 때 되돌릴지도 사람이 판단합니다.</p></div>
       </div>
       <div class="guard box">
         <h3>Agent가 넘지 못하는 선</h3>
@@ -585,19 +532,12 @@
       <h2>착수 제안에서 운영 배포까지 걸린 시간</h2>
       <p class="sub">작은 일은 Sprint 하나 안에 끝나고, 큰 일은 여러 Sprint로 나눕니다.</p>
       <div class="stats cases">
-        <div><b>2일</b><span>조회 성능 개선</span></div>
+        <div><b>2일</b><span>조회 성능 개선</span><em>배포 뒤: 조회 중앙값이 약 19초에서 66ms로, 약 290배 빨라졌습니다</em></div>
         <div><b>약 10일</b><span>그룹 인터뷰 기능</span></div>
         <div><b>약 2주</b><span>패널 속성 동기화</span></div>
-        <div><b>Sprint 5개</b><span>Java 파일 327개를 Kotlin으로 전환</span></div>
+        <div><b>Sprint 5개</b><span>Java 파일 327개를 Kotlin으로 전환</span><em>배포 뒤: 전환 100%. 계약 테스트가 배포 전에 결함 2건을 잡았습니다</em></div>
       </div>
-
-      <h3 class="mid" style="margin-top:56px">배포 뒤에 잰 것</h3>
-      <div class="probs" style="margin-top:20px">
-        <div class="prob box"><span class="tag" style="background:var(--mint)">조회 성능</span><h3>약 290배 빨라진 조회</h3><p>큰 설문의 조회에 인덱스를 넣어 중앙값이 약 19초에서 66ms가 됐습니다. 읽기 I/O 감소는 22%로, 목표였던 3분의 1에는 못 미쳤습니다.</p></div>
-        <div class="prob box"><span class="tag" style="background:var(--lilac)">스트림 처리</span><h3>중복 처리 470분의 1</h3><p>같은 갱신을 묶어 한 번만 처리하게 고쳐 중복이 47%에서 0.1%가 됐습니다. 인스턴스를 절반으로 줄이고도 최대 대기가 420초에서 120초로 짧아졌습니다.</p></div>
-        <div class="prob box"><span class="tag" style="background:var(--yellow)">언어 전환</span><h3>Kotlin 전환 100%</h3><p>서비스 하나의 Java 코드를 모두 Kotlin으로 옮겼습니다. 계약 테스트가 배포 전에 결함 2건을 잡았습니다.</p></div>
-      </div>
-      <p class="tally">2026년 2월부터 9개월 동안 <b>RFC 80건+</b>, <b>Design과 Spec, Plan, ADR 300건+</b>가 쌓였고, 배포 뒤에 목표와 맞춰 본 지표는 <b>100개+</b>입니다. 목표에 못 미친 지표와 부작용도 그대로 적습니다.</p>
+      <p class="tally">2026년 2월부터 9개월 동안 <b>RFC 80건+</b>, <b>Design과 Spec, Plan, ADR 300건+</b>가 쌓였고, 배포 뒤에 목표와 맞춰 본 지표는 <b>100개+</b>입니다. 스트림 처리의 중복을 47%에서 0.1%로 줄인 것처럼 숫자로 적고, 목표에 못 미친 지표와 부작용도 그대로 적습니다.</p>
     </div>
   </section>
 
@@ -605,17 +545,7 @@
     <div class="wrap">
       <span class="tag" style="background:var(--lilac)">Tech stack</span>
       <h2>이런 기술로 만듭니다</h2>
-      <p class="sub">저장소의 빌드 파일에서 확인한 것만 적었습니다. 오래된 Java와 Spring Boot로 된 서비스도 남아 있고, Kotlin과 최신 Spring Boot로 옮기는 중입니다.</p>
-      <div class="stack box">
-        <div class="srow"><b>Backend</b><div class="chips"><i>Kotlin</i><i>Java 21</i><i>Spring Boot</i><i>Coroutines</i><i>WebFlux</i><i>jOOQ</i><i>JPA</i></div></div>
-        <div class="srow"><b>Data</b><div class="chips"><i>MySQL</i><i>Redis</i><i>ClickHouse</i><i>OpenSearch</i><i>Apache Kafka</i></div></div>
-        <div class="srow"><b>Frontend</b><div class="chips"><i>TypeScript</i><i>React</i><i>Next.js</i><i>Vite</i><i>Turborepo</i><i>MobX</i><i>TanStack Query</i><i>Storybook</i></div></div>
-        <div class="srow"><b>Mobile</b><div class="chips"><i>React Native</i><i>Kotlin</i><i>Jetpack Compose</i></div></div>
-        <div class="srow"><b>AI</b><div class="chips"><i>OpenAI SDK</i><i>Gemini</i><i>Langfuse</i><i>MCP</i><i>Spring AI</i><i>GraphRAG</i><i>Python</i><i>FastAPI</i></div></div>
-        <div class="srow"><b>Agent</b><div class="chips"><i>Claude Code</i><i>Codex</i></div></div>
-        <div class="srow"><b>Infra</b><div class="chips"><i>AWS</i><i>Kubernetes</i><i>Argo CD</i><i>Kustomize</i><i>Helm</i><i>GitHub Actions</i><i>SonarQube</i></div></div>
-        <div class="srow"><b>Test</b><div class="chips"><i>Kotest</i><i>Spock</i><i>JUnit 5</i><i>Testcontainers</i><i>Vitest</i><i>Maestro</i></div></div>
-      </div>
+      <div class="stack box"><div class="chips"><i>Kotlin</i><i>Java 21</i><i>Spring Boot</i><i>Coroutines</i><i>WebFlux</i><i>jOOQ</i><i>JPA</i><i>MySQL</i><i>Redis</i><i>ClickHouse</i><i>OpenSearch</i><i>Apache Kafka</i><i>TypeScript</i><i>React</i><i>Next.js</i><i>Vite</i><i>Turborepo</i><i>MobX</i><i>TanStack Query</i><i>Storybook</i><i>React Native</i><i>Jetpack Compose</i><i>OpenAI SDK</i><i>Gemini</i><i>Langfuse</i><i>MCP</i><i>Spring AI</i><i>GraphRAG</i><i>Python</i><i>FastAPI</i><i>Claude Code</i><i>Codex</i><i>AWS</i><i>Kubernetes</i><i>Argo CD</i><i>Kustomize</i><i>Helm</i><i>GitHub Actions</i><i>SonarQube</i><i>Kotest</i><i>Spock</i><i>JUnit 5</i><i>Testcontainers</i><i>Vitest</i><i>Maestro</i></div></div>
     </div>
   </section>
 
@@ -683,40 +613,6 @@
     b.addEventListener('click', function () { simulate(k, b); });
     $('concepts').appendChild(b);
   });
-
-  var STEPS = [
-    { n: 'PRD', k: '제품 요구사항', c: '#f5e89d', q: '무엇을 왜 만들 가치가 있는가', d: '사용자에게 어떤 가치가 있는지, 왜 만들어야 하는지를 적습니다. 큰 일은 여기서 여러 RFC로 나뉩니다.', a: '관련 자료를 읽고 초안을 씁니다', h: '만들 가치가 있는지 판단합니다' },
-    { n: 'RFC', k: '착수 제안', c: '#e3765d', q: '왜 지금 하는가', d: '지금 이 일을 시작해야 하는 이유를 한 페이지에 결론부터 씁니다. 승인을 받아야 일을 시작합니다.', a: '초안을 쓰고 빠진 내용을 짚습니다', h: '승인, 보류, 반려를 결정합니다' },
-    { n: 'Design', k: '설계', c: '#cfe5dc', q: '어떻게 해결하는가', d: '앞 단계 문서와 관련 코드를 읽고 해결 방법을 정합니다. 조사한 자료도 함께 남깁니다.', a: '코드와 문서를 조사해 초안을 씁니다', h: '여러 방법 가운데 하나를 고릅니다' },
-    { n: 'Spec', k: '구현 명세', c: '#c3b3e3', q: '무엇을 구현하는가', d: 'Agent가 읽고 바로 코드를 쓸 수 있을 만큼 자세히 적습니다.', a: 'Spec을 읽고 구현합니다', h: '빠진 동작이 없는지 확인합니다' },
-    { n: 'Plan', k: '작업 계획', c: '#9dc0ff', q: '어떤 순서로 나눠서 하는가', d: '일을 Agent가 하나씩 맡아 끝낼 수 있는 크기로 나눕니다. 배포, rollback, 모니터링 방법도 정합니다.', a: '나눈 작업을 하나씩 맡아 구현합니다', h: '순서를 정하고 배포를 책임집니다' },
-    { n: 'Impact', k: '성과 정리', c: '#e8e3d9', q: '무엇이 달라졌나', d: '배포하고 지표가 안정되면, 처음 세운 목표와 실제 결과를 비교해 적습니다. 남은 일은 새 RFC로 이어집니다.', a: '지표와 문서를 모아 초안을 씁니다', h: '다음에 무엇을 할지 정합니다' }
-  ];
-  var ROBOT = '<svg viewBox="0 0 34 34"><rect x="5" y="9" width="24" height="20" rx="6" fill="#0050ff" stroke="#232c3e" stroke-width="2.5"/><circle cx="13" cy="18" r="3" fill="#fff"/><circle cx="21" cy="18" r="3" fill="#fff"/><path d="M17 9V4" stroke="#232c3e" stroke-width="2.5" stroke-linecap="round"/><circle cx="17" cy="3.5" r="2.5" fill="#e3765d" stroke="#232c3e" stroke-width="2"/></svg>';
-  var HUMAN = '<svg viewBox="0 0 34 34"><circle cx="17" cy="11" r="7" fill="#f5e89d" stroke="#232c3e" stroke-width="2.5"/><path d="M5 31c0-8 5-12 12-12s12 4 12 12z" fill="#e3765d" stroke="#232c3e" stroke-width="2.5" stroke-linejoin="round"/></svg>';
-  var steps = $('steps'), detail = $('detail'), cur = 0, auto = null;
-  function show(i) {
-    cur = i;
-    Array.prototype.forEach.call(steps.children, function (b, k) { b.setAttribute('aria-selected', k === i ? 'true' : 'false'); });
-    var s = STEPS[i];
-    detail.innerHTML = '';
-    var left = el('div');
-    var t = el('span', 'tag', (i + 1) + '단계 ' + s.n + ' (' + s.k + ')'); t.style.background = s.c;
-    left.appendChild(t); left.appendChild(el('div', 'q', s.q + '?')); left.appendChild(el('p', null, s.d));
-    var who = el('div', 'who');
-    var a = el('div', 'agent'); a.innerHTML = ROBOT; a.appendChild(el('span', null, 'Agent: ' + s.a));
-    var h = el('div', 'human'); h.innerHTML = HUMAN; h.appendChild(el('span', null, '사람: ' + s.h));
-    who.appendChild(a); who.appendChild(h);
-    detail.appendChild(left); detail.appendChild(who);
-  }
-  STEPS.forEach(function (s, i) {
-    var b = el('button', 'step'); b.type = 'button'; b.setAttribute('role', 'tab'); b.style.setProperty('--c', s.c);
-    b.appendChild(el('small', null, s.k)); b.appendChild(el('b', null, s.n));
-    b.addEventListener('click', function () { clearInterval(auto); show(i); });
-    steps.appendChild(b);
-  });
-  show(0);
-  if (!reduce) auto = setInterval(function () { show((cur + 1) % STEPS.length); }, 3200);
 
   var QS = [
     { q: '새 기능을 맡았습니다. 가장 먼저 무엇을 여시나요?', o: ['IDE', '회의 일정을 잡을 캘린더', '빈 문서', 'Agent 채팅창'], c: 3,
